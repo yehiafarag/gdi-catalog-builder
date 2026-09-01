@@ -1,0 +1,13 @@
+.venv/
+.idea/
+.pytest_cache/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+*.iml
+.DS_Store
+
+# Generated project artifacts
+output/
+catalog.ttl
