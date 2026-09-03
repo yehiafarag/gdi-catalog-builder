@@ -7,3 +7,4 @@ class ContactPoint(BaseModel):
     fn: str | None = None
     email: str | None = None
     url: str | None = None
+    identifier: str | None = None

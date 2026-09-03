@@ -114,6 +114,16 @@ PYTHONPATH=src python -m gdi_catalog_builder.cli input/your_file.csv
 
 The CLI validates the generated RDF and writes the Turtle output into the `output/` directory.
 
+Mode flags:
+
+```bash
+PYTHONPATH=src python -m gdi_catalog_builder.cli input/your_file.csv --minimum
+PYTHONPATH=src python -m gdi_catalog_builder.cli input/your_file.csv --full
+```
+
+- `--minimum`: uses available CSV data and ignores missing values for required fields.
+- `--full`: requires required field values to be present (default behavior).
+
 ## Example usage
 
 A simple call flow looks like this:

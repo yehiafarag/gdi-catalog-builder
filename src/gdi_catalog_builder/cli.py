@@ -25,6 +25,23 @@ def parse_arguments() -> argparse.Namespace:
         default=Path("catalog.ttl"),
         help="Path for the generated Turtle file. Default: catalog.ttl",
     )
+    mode_group = parser.add_mutually_exclusive_group()
+    mode_group.add_argument(
+        "--minimum",
+        action="store_true",
+        help=(
+            "Generate output from currently available CSV data and "
+            "ignore missing required column values."
+        ),
+    )
+    mode_group.add_argument(
+        "--full",
+        action="store_true",
+        help=(
+            "Require all required CSV column values. "
+            "This is the default behavior."
+        ),
+    )
 
     return parser.parse_args()
 
@@ -42,7 +59,11 @@ def main() -> None:
         print(f"Input file does not exist: {input_file}")
         raise SystemExit(1)
 
-    catalog = CatalogBuilder.from_csv(str(input_file))
+    strict_required = not args.minimum
+    catalog = CatalogBuilder.from_csv(
+        str(input_file),
+        strict_required=strict_required,
+    )
     data_graph = RDFGenerator().generate_catalog_graph(catalog)
 
     shapes_graph = ShaclLoader.load_shapes(
@@ -54,17 +75,23 @@ def main() -> None:
         shapes_graph=shapes_graph,
     )
 
-    if not conforms:
+    if not conforms and not args.minimum:
         print("GDI SHACL validation failed:")
         print(report)
         raise SystemExit(1)
+    if not conforms and args.minimum:
+        print(
+            "GDI SHACL validation failed, but continuing in --minimum mode:"
+        )
+        print(report)
 
     data_graph.serialize(
         destination=str(output_file),
         format="turtle",
     )
 
-    print("GDI SHACL validation passed.")
+    if conforms:
+        print("GDI SHACL validation passed.")
     print(f"Created: {output_file}")
 
 

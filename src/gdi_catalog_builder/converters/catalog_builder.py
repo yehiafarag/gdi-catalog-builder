@@ -7,11 +7,18 @@ class CatalogBuilder:
     """Build a catalog model from a CSV file in the GDI metadata format."""
 
     @staticmethod
-    def from_csv(file_path: str) -> Catalog:
+    def from_csv(
+        file_path: str,
+        *,
+        strict_required: bool = True,
+    ) -> Catalog:
         rows = CSVReader.read(file_path)
 
         datasets = [
-            DatasetMapper.from_csv_row(row)
+            DatasetMapper.from_csv_row(
+                row,
+                strict_required=strict_required,
+            )
             for row in rows
         ]
 
