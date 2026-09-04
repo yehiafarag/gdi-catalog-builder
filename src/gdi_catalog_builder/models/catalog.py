@@ -10,5 +10,6 @@ class Catalog(BaseModel):
 
     title: str
     description: Optional[str] = None
+    # A list of applicable legislation
     applicable_legislation: list[str] = Field(default_factory=list)
     datasets: list[DatasetMetadata] = Field(default_factory=list)

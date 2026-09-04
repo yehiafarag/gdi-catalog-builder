@@ -23,7 +23,7 @@ class DatasetMapper:
         )
         if not applicable_legislation:
             applicable_legislation = [
-                "http://data.europa.eu/eli/reg/2025/327/oj"
+                #"http://data.europa.eu/eli/reg/2025/327/oj"
             ]
         health_categories = DatasetMapper._split_values(row.get("health_category"))
 

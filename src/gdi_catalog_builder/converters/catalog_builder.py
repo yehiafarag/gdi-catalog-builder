@@ -26,7 +26,7 @@ class CatalogBuilder:
             title="Norwegian GDI Catalog",
             description="GDI datasets provided by the Norwegian node",
             applicable_legislation=[
-                "http://data.europa.eu/eli/reg/2025/327/oj"
+            #     "http://data.europa.eu/eli/reg/2025/327/oj"
             ],
             datasets=datasets,
         )
