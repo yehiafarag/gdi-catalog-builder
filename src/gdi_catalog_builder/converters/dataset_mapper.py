@@ -25,7 +25,7 @@ class DatasetMapper:
             applicable_legislation = [
                 #"http://data.europa.eu/eli/reg/2025/327/oj"
             ]
-        health_categories = DatasetMapper._split_values(row.get("health_category"))
+        health_categories = ["http://data.gdi.eu/core/p2/"+value for value in DatasetMapper._split_values(row.get("health_category"))]
 
         dataset_identifier = DatasetMapper._required_or_optional(
             row.get("id"),
@@ -65,6 +65,7 @@ class DatasetMapper:
                 contact_points=publisher_contact_points,
             )
 
+        normalized_access_rights = "http://publications.europa.eu/resource/authority/access-right/"+DatasetMapper._optional_value(row.get("access_rights"))
         distribution_access_url = DatasetMapper._optional_value(row.get("external_link"))
         distributions: list[Distribution] = []
         if distribution_access_url:
@@ -88,6 +89,9 @@ class DatasetMapper:
                     rights={"en": " "},
                 )
             )
+
+        conforms_to = ["http://data.gdi.eu/core/p2/"+value for value in DatasetMapper._split_values(row.get("conforms_to"))]
+        dataset_type = DatasetMapper._optional_value(row.get("type"))
 
         publisher_email = None
         if publisher_contact_points:
@@ -113,16 +117,14 @@ class DatasetMapper:
             keyword=keywords,
             theme=themes,
             issued=DatasetMapper._optional_value(row.get("issued")),
-            access_rights=DatasetMapper._optional_value(row.get("access_rights")),
+            access_rights=normalized_access_rights,
             applicable_legislation=applicable_legislation,
             health_category=health_categories,
             distributions=distributions,
             contact_points=dataset_contact_points,
             provenance={"en": "Created and maintained by the University of Bergen."},
-            type=(
-                "https://publications.europa.eu/resource/authority/dataset-type/"
-                "SYNTHETIC_DATA"
-            ),
+            type=dataset_type,
+            conforms_to=conforms_to,
             version_notes={
                 "en": "Initial metadata version for the Norwegian GDI catalog."
             },
