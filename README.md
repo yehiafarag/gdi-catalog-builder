@@ -147,23 +147,26 @@ else:
 
 ## Input format
 
-This project expects semicolon-separated CSV files with columns that map to dataset metadata fields such as:
+This project expects semicolon-separated CSV files using the current GDI Norway export schema. The active field set is:
 
 - `id`
 - `name`
 - `description`
 - `author_name`
 - `author_id`
+- `keywords`
 - `publisher_name`
 - `publisher_id`
-- `contact_point`
-- `keywords`
 - `theme`
-- `access_rights`
-- `health_category`
+- `contact_point`
+- `issued`
 - `external_link`
+- `health_category`
+- `access_rights`
+- `conforms_to`
+- `type`
 
-The exact field set may vary depending on the source CSV, but the mapper is designed around the GDI metadata conventions used by this project.
+The current production export also includes `conforms_to` and `type`, which are required by the SHACL model for the generated RDF. Optional or legacy columns such as `applicable_legislation` are tolerated when present, but they are not part of the main Norway CSV export currently used by this project.
 
 ## Validation
 
